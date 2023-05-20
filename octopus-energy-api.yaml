@@ -1,0 +1,229 @@
+openapi: '3.0.2'
+
+info:
+  title: Octopus Energy API
+  version: '1.0'
+  description: |
+    OpenAPI specification version of the Octopus Energy API documented on their website here <a href="https://developer.octopus.energy/docs/api/" target="_blank">https://developer.octopus.energy/docs/api/</a>.
+
+    Why? Because although Octopus Energy have documented their API, it's not using OpenAPI spec and therefore you cannot use tooling to
+      automatically generate client libraries for it. This means everyone creates custom code to interface with their API.
+servers:
+  - url: https://api.octopus.energy
+    description: Production server
+
+components:
+  securitySchemes:
+    basicAuth:
+      type: http
+      scheme: basic
+      description: |
+        Basic authentication is used to authenticate requests to the Octopus Energy API. You can find your API key in your account dashboard.
+        You can find your account dashboard here: <a href="https://octopus.energy/dashboard/developer/" target="_blank">https://octopus.energy/dashboard/developer/</a>.
+
+        The username is your API key and the password is blank.
+
+        Please see their API documentation for more information: <a href="https://developer.octopus.energy/docs/api/#authentication" target="_blank">https://developer.octopus.energy/docs/api/#authentication</a>.
+  schemas:
+    ConsumptionInstance:
+      type: object
+      properties:
+        consumption:
+          type: number
+          format: double
+        interval_start:
+          type: string
+          format: date-time
+        interval_end:
+          type: string
+          format: date-time
+    ConsumptionResponse:
+      type: object
+      properties:
+        count:
+          type: integer
+        next:
+          type: string
+        previous:
+          type: string
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/ConsumptionInstance'
+    GridSupplyPoint:
+      type: object
+      properties:
+        group_id:
+          type: string
+    GridSupplyPointsResponse:
+      type: object
+      properties:
+        count:
+          type: integer
+        next:
+          type: string
+        previous:
+          type: string
+        results:
+          type: array
+          items:
+            $ref: '#/components/schemas/GridSupplyPoint'
+
+paths:
+  /v1/electricity-meter-points/{mpan}/:
+    get:
+      security:
+        - basicAuth: []
+  /v1/electricity-meter-points/{mpan}/meters/{serial_number}/consumption/:
+    get:
+      summary: Get electricity meter consumption data
+      description: |
+        See description on Octopus Energy's API documentation site <a href="https://developer.octopus.energy/docs/api/#consumption" target="_blank">https://developer.octopus.energy/docs/api/#consumption</a>.
+      security:
+        - basicAuth: []
+      parameters:
+        - name: mpan
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: serial_number
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: period_from
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: period_to
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: page_size
+          in: query
+          required: false
+          schema:
+            type: integer
+        - name: order_by
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - "period"
+              - "-period"
+        - name: group_by
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - hour
+              - day
+              - week
+              - month
+              - quarter
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConsumptionResponse'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+  /v1/gas-meter-points/{mprn}/meters/{serial_number}/consumption/:
+    get:
+      summary: Get gas meter consumption data
+      description: |
+        See description on Octopus Energy's API documentation site <a href="https://developer.octopus.energy/docs/api/#consumption" target="_blank">https://developer.octopus.energy/docs/api/#consumption</a>.
+      security:
+        - basicAuth: []
+      parameters:
+        - name: mpan
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: serial_number
+          in: path
+          required: true
+          schema:
+            type: string
+        - name: period_from
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: period_to
+          in: query
+          required: false
+          schema:
+            type: string
+            format: date-time
+        - name: page_size
+          in: query
+          required: false
+          schema:
+            type: integer
+        - name: order_by
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - "period"
+              - "-period"
+        - name: group_by
+          in: query
+          required: false
+          schema:
+            type: string
+            enum:
+              - hour
+              - day
+              - week
+              - month
+              - quarter
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConsumptionResponse'
+        '401':
+          description: Unauthorized
+        '403':
+          description: Forbidden
+  /v1/industry/grid-supply-points/:
+    get:
+      summary: Get grid supply points
+      description: |
+        See description on Octopus Energy's API documentation site <a href="https://developer.octopus.energy/docs/api/#list-grid-supply-points" target="_blank">https://developer.octopus.energy/docs/api/#list-grid-supply-points</a>.
+      parameters:
+        - name: postcode
+          in: query
+          required: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/GridSupplyPointsResponse'
+  /v1/products/:
+    get:
+  /v1/products/{product_code}/:
+    get:
+  
