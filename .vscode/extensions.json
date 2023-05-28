@@ -1,0 +1,7 @@
+{
+    "recommendations": [
+        "github.copilot-nightly",
+        "redhat.vscode-yaml",
+        "mermade.openapi-lint"
+    ]
+}
