@@ -600,7 +600,7 @@ paths:
       security:
         - basicAuth: []
       parameters:
-        - name: mpan
+        - name: mprn
           in: path
           required: true
           schema:
