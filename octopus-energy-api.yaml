@@ -4,7 +4,7 @@ info:
   title: Octopus Energy API
   version: '1.0'
   description: |
-    OpenAPI specification version of the Octopus Energy API documented on their website here <a href="https://developer.octopus.energy/docs/api/" target="_blank">https://developer.octopus.energy/docs/api/</a>.
+    OpenAPI spec version of the Octopus Energy API documented on their website here <a href="https://developer.octopus.energy/docs/api/" target="_blank">https://developer.octopus.energy/docs/api/</a>.
 
     Why? Because although Octopus Energy have documented their API, it's not using OpenAPI spec and therefore you cannot use tooling to
       automatically generate client libraries for it. This means everyone creates custom code to interface with their API.
