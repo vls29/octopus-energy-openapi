@@ -2,6 +2,7 @@
     "recommendations": [
         "github.copilot-nightly",
         "redhat.vscode-yaml",
-        "mermade.openapi-lint"
+        "mermade.openapi-lint",
+        "streetsidesoftware.code-spell-checker"
     ]
 }
